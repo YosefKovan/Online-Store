@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+</head>
+
+<div th:replace="navbar :: navbar"></div>
+
+<body>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 border-bottom mt-4">
+       <div class="row align-items-center justify-content-center min-vh-100">
+         <div class="col-12 col-md-6 col-lg-5">
+           <div class="d-flex justify-content-center">
+             <img th:src="@{'/uploads/' + ${product.imageUrl}}" class="img-fluid" alt="Responsive image">
+           </div>
+         </div>
+
+         <div class="col-12 col-md-6 col-lg-5">
+           <h2 th:text="${product.productName}"></h2>
+           <p th:text="${product.productDescription}"></p>
+
+           <div class="block mb-2" th:if="${average > 0}">
+              <span th:each="i : ${#numbers.sequence(1, average)}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#eec300" d="m10 15l-5.878 3.09l1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955l6.572.955l-4.756 4.635l1.123 6.545z"/></svg>
+              </span>
+             <span th:each="i : ${#numbers.sequence(1, 5 - average)}" th:if="${5 - average != 0}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill="#eec300" d="m16 6.204l-5.528-.803L8 .392L5.528 5.401L0 6.204l4 3.899l-.944 5.505L8 13.009l4.944 2.599L12 10.103zm-8 5.569l-3.492 1.836l.667-3.888L2.35 6.968l3.904-.567L8 2.864l1.746 3.537l3.904.567l-2.825 2.753l.667 3.888z"/></svg>
+              </span>
+
+             <a href="#reviews" th:if="${average > 0}" class="ms-1">Reviews</a>
+
+           </div>
+
+           <h2 class="fs-5 mb-3" th:if="${average < 1}" th:text="${'No Reviews'}"></h2>
+
+           <form method="post" th:action="@{/public/add-to-cart/{id}(id=${product.id})}">
+
+             <div th:if="${product.inventory != 0}" class="d-flex align-items-center">
+
+               <button class="btn p-0 m-1" id="reduce">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#0D6EFD" d="M18 11H6a2 2 0 0 0 0 4h12a2 2 0 0 0 0-4"/></svg>
+               </button>
+
+               <input type="number" id="quantity" name="quantity" th:min="${1}" th:max="${product.inventory}" th:value="${1}"/>
+
+               <button class="btn p-0 m-1" id="add">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#0D6EFD" d="M18 10h-4V6a2 2 0 0 0-4 0l.071 4H6a2 2 0 0 0 0 4l4.071-.071L10 18a2 2 0 0 0 4 0v-4.071L18 14a2 2 0 0 0 0-4"/></svg>
+               </button>
+
+             </div>
+
+             <p th:if="${product.inventory == 0}" class="fs-4 text-danger" >Out of stock!</p>
+
+             <p class="fw-bold display-6" th:text="'$'+${product.price}"></p>
+
+             <button class="btn btn-primary d-flex align-items-center mb-3" type="submit" th:disabled="${product.inventory == 0}">
+               <span class="me-1">Add to cart</span>
+               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                 <path fill="#f2ecec" d="M20.756 5.345A1 1 0 0 0 20 5H6.181l-.195-1.164A1 1 0 0 0 5 3H2.75a1 1 0 1 0 0 2h1.403l1.86 11.164l.045.124l.054.151l.12.179l.095.112l.193.13l.112.065a1 1 0 0 0 .367.075H18a1 1 0 1 0 0-2H7.847l-.166-1H19a1 1 0 0 0 .99-.858l1-7a1 1 0 0 0-.234-.797M18.847 7l-.285 2H15V7zM14 7v2h-3V7zm0 3v2h-3v-2zm-4-3v2H7l-.148.03L6.514 7zm-2.986 3H10v2H7.347zM15 12v-2h3.418l-.285 2z"/><circle cx="8.5" cy="19.5" r="1.5" fill="#f2ecec"/><circle cx="17.5" cy="19.5" r="1.5" fill="#f2ecec"/></svg>
+             </button>
+           </form>
+         </div>
+       </div>
+    </div>
+    <div class="col-12 col-lg-10 pt-3 mb-4" id="reviews" th:if="${reviews != null && reviews.size() > 0}">
+      <div class="row">
+        <div class = "col-12">
+          <h2 class="fs-3">Reviews</h2>
+        </div>
+        <div th:each="review : ${reviews}" class="col-12 col-md-10 col-lg-8 border rounded p-3 mt-2">
+          <div class="row">
+            <div class="col-12 d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 16 16"><path fill="#6c757d" d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16m.847-8.145a2.502 2.502 0 1 0-1.694 0C5.471 8.261 4 9.775 4 11c0 .395.145.995 1 .995h6c.855 0 1-.6 1-.995c0-1.224-1.47-2.74-3.153-3.145"/></svg>
+              <span class="ms-2 fs-6" th:text="${review.userAccount.username}"></span>
+            </div>
+            <div class="col-12">
+              <p class="mb-0" th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy')}"></p>
+            </div>
+            <div class="col-12">
+              <!-- Filled stars -->
+              <span th:each="i : ${#numbers.sequence(1, review.rating)}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="#eec300" d="m10 15l-5.878 3.09l1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955l6.572.955l-4.756 4.635l1.123 6.545z"/></svg><path fill="#eec300" d="m10 15l-5.878 3.09l1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955l6.572.955l-4.756 4.635l1.123 6.545z"/></svg>
+              </span>
+
+              <!-- Empty stars -->
+              <span th:each="i : ${#numbers.sequence(1, 5 - review.rating)}" th:if="${5 - review.rating != 0}">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16"><path fill="#eec300" d="m16 6.204l-5.528-.803L8 .392L5.528 5.401L0 6.204l4 3.899l-.944 5.505L8 13.009l4.944 2.599L12 10.103zm-8 5.569l-3.492 1.836l.667-3.888L2.35 6.968l3.904-.567L8 2.864l1.746 3.537l3.904.567l-2.825 2.753l.667 3.888z"/></svg>
+              </span>
+
+            </div>
+            <div class="col-12 mt-1">
+              <h3 class="fs-5" th:text="${review.commentTitle}"></h3>
+              <p class="m-0 p-0 fs-6" th:text="${review.comment}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-10  pt-3 mb-4" th:if="${reviews != null && reviews.size() < 1}">
+      <div class="row">
+        <div class="col-12">
+          <p class="fs-2">No Reviews To Display</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/productPage.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!-- templates/fragments/alerts.html -->
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="alert-messages">
+    <div class="form-group mb-3">
+        <div id="successAlert" class="alert alert-success alert-dismissible fade d-none" role="alert">
+            <strong id="successTitle"></strong>
+            <span id="successMessage"></span>
+            <button id="successAlertCloseBtn" type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div id="failedAlert" class="alert alert-danger alert-dismissible fade d-none" role="alert">
+            <strong id="failedTitle"></strong>
+            <span id="failedMessage"></span>
+            <button id="failedAlertCloseBtn" type="button" class="btn-close" aria-label="Close"></button>
+        </div>
+    </div>
+</div>

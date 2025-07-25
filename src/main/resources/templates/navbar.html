@@ -1,0 +1,118 @@
+<nav class="navbar navbar-dark bg-dark" th:fragment="navbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container-fluid d-flex flex-nowrap">
+
+        <!-- Left: Toggler + Logo -->
+        <div class="d-flex">
+            <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand me-2" href="/">
+                <img src="/img/logo.png" alt="ShopSquare Logo" height="50">
+            </a>
+        </div>
+
+        <!-- Search bar -->
+        <div class="input-group me-3">
+            <input type="text" id="search-input-1" class="form-control  d-none d-md-block" placeholder="Search Shop Square..." aria-label="Search-top" aria-describedby="basic-addon2">
+            <div class="list-group position-absolute top-100 start-0 w-100 z-3 d-none d-md-block" id="search-results-top-bar" ></div>
+            <div id="suggestionList" class="d-none list-group position-absolute top-100 start-0 w-100 z-3">
+            </div>
+            <div class="input-group-append d-none d-md-block">
+                <button class="btn btn-outline-warning rounded-end rounded-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- sign in sign out and users name -->
+        <div class="d-flex align-items-center">
+            <a href="/login" sec:authorize="isAnonymous()" class="text-decoration-none text-white d-flex align-items-center text-nowrap me-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                </svg>
+                <span>Sign in</span>
+            </a>
+
+            <form th:action="@{/logout}" sec:authorize="isAuthenticated()" method="post">
+
+                <!-- hidden CSRF field -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <!-- Show if user is logged in -->
+                <div class="d-flex align-items-center text-nowrap me-4 text-white">
+                    <button type="submit" class="btn p-0 text-decoration-none me-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="#fffdfd" d="M3 21V3h9v2H5v14h7v2zm13-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z"/></svg>
+                    </button>
+                    <div>
+                        <h2 class="fs-6 p-0 m-0">Hello</h2>
+                        <h3 class="fs-6 0-0 m-0" th:text="${name != null && name.length() > 12 ? name.substring(0, 12) + '...' : name}"></h3>
+                    </div>
+                </div>
+
+
+            </form>
+
+            <a href="/public/cart" class="btn p-0 border-0 bg-transparent text-white d-flex align-items-center me-3 position-relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                </svg>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${cartSize}" id="cart-size"></span>
+            </a>
+        </div>
+
+        <!-- Offcanvas menu -->
+        <div class="offcanvas offcanvas-start bg-white" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+                <div class="input-group me-3">
+                    <input type="text" class="form-control" placeholder="Search Shop Square..." aria-label="Search-top" aria-describedby="basic-addon2" id="second-search-bar">
+                    <div class="list-group position-absolute top-100 start-0 w-100 z-3" id="second-search-bar-results"></div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary rounded-end rounded-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column">
+
+                <h2 class="fs-5 border-bottom pb-3">User</h2>
+                <ul class="list-unstyled">
+                    <li class="list-group-item list-group-item-action list-group-item-light fw-bold p-2">
+                        <a th:href="@{'/user/previous-orders'}" class="d-flex justify-content-between align-items-center text-decoration-none text-dark fs-6 text">
+                            <span class="fs-6 fw-normal">Previous Order</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/></svg>
+                        </a>
+                    </li>
+                    <li class="list-group-item list-group-item-action list-group-item-light fw-bold p-2">
+                        <a th:href="@{'/public/cart'}" class="d-flex justify-content-between align-items-center text-decoration-none text-dark fs-6 text">
+                            <span class="fs-6 fw-normal">Cart</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/></svg>
+                        </a>
+                    </li>
+                </ul>
+
+                <h2 class="fs-5 border-bottom pb-3">Shop by Department</h2>
+                <ul class="list-unstyled">
+                    <li th:each="category : ${categories}" class="list-group-item list-group-item-action list-group-item-light fw-bold p-2">
+                        <a th:href="@{'/public/categories/' + ${category.categoryName}}" class="d-flex justify-content-between align-items-center text-decoration-none text-dark fs-6 text">
+                            <span class="fs-6 fw-normal" th:text="${category.categoryName}"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/></svg>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="mt-auto">
+                    <a href="/admin/products-manager" class="border-top text-decoration-none d-flex align-items-center p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24"><path fill="#7d7d7d" d="M12 12q-1.65 0-2.825-1.175T8 8t1.175-2.825T12 4t2.825 1.175T16 8t-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z"/></svg>
+                        <span class="fs-6 text-secondary">Admin Page / Login</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

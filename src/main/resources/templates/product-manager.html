@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seller Login</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    </head>
+    <link rel="stylesheet" href="/css/product-manager.css">
+<body>
+
+<div th:replace="admin-navbar :: admin-navbar"></div>
+
+<div class="container">
+    <div id="product-manager-page" class="row d-flex align-items-center justify-content-center mt-3">
+
+
+        <div class="col-12 col-lg-8 mt-3 bg-light p-3">
+            <div class="row">
+                <div class="col-12 mb-0 d-flex align-items-center">
+                    <span class="fs-1 p-0 m-0">Filter products</span>
+                    <a href="/admin/add-product-page" id=add-btn class="btn btn-primary ms-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus text-light" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="col-12 col-lg-6 mt-3">
+                   <select class="form-select" aria-label="Default select example" id="category-filter">
+                       <option selected>Choose Category</option>
+                   </select>
+               </div>
+                <div class="col-12 col-lg-6 mt-3">
+                    <select class="form-select" aria-label="Default select example" id="price-filter">
+                        <option selected>Filter By Price</option>
+                    </select>
+                </div>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-outline-primary" id="filter-btn">
+                        Filter
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-secondary">Clear Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8 mt-3">
+            <div th:replace="alerts :: alert-messages"></div>
+        </div>
+
+        <div class="col-12 col-lg-8 mt-3">
+            <div class="table-responsive-md">
+            <table class="table" id="productTable">
+                <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col" class="text-center">Name</th>
+                    <th scope="col" class="text-center">Category</th>
+                    <th scope="col" class="text-center">Price</th>
+                    <th scope="col" class="text-center">Inventory</th>
+                    <th scope="col" class="text-center">Edit</th>
+                    <th scope="col" class="text-center">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product, iterStat : ${products}" th:id="${product.id}" class="align-middle">
+                        <td>
+                            <img th:src="@{'/uploads/' + ${product.imageUrl}}" alt="Product Image" width="35" style="height: 70px; object-fit: contain;"/>
+                        </td>
+                        <td th:text="${product.productName}" class="truncate-cell text-center"></td>
+                        <td th:text="${product.category.categoryName}" class="truncate-cell text-center"></td>
+                        <td th:text="'$'+${product.price}" class="truncate-cell text-center"></td>
+                        <td th:text="${product.inventory}" class="truncate-cell text-center"></td>
+                        <td class="text-center">
+                            <button class="btn border-0 edit-btn mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 1200 1200"><path fill="#0d6efd" d="M0 0v1200h1200V424.292l-196.875 196.875v381.958h-806.25v-806.25h381.958L775.708 0zm1050 0l-76.831 76.831l150 150L1200 150zM936.914 113.086L497.168 552.832l150 150l439.746-439.746zM441.943 622.339c-2.225.034-4.493.195-6.738.366v142.09h142.09c0-38.708-18.492-78.039-47.314-105.542c-23.842-22.751-54.675-37.428-88.038-36.914"/></svg>
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn border-0 delete-btn mx-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="#e91818" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                          d="M14 11v6m-4-6v6M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7M4 7h16M7 7l2-4h6l2 4"/>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+           </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="/js/alerts.js"></script>
+<script src="/js/productManager.js"></script>
+</body>
+</html>

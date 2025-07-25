@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seller Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="/css/admin-orders-page.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="admin-navbar :: admin-navbar"></div>
+
+<div class="container">
+    <div id="product-manager-page" class="row d-flex align-items-center justify-content-center mt-3">
+
+
+        <div class="col-12 mt-3 bg-light p-3">
+            <div class="row gx-3">
+                <div class="col-12 mb-0 d-flex align-items-center">
+                    <h1 class="fs-2">Customer Orders </h1>
+                </div>
+
+                <div class="col-12 col-md-6 mt-3">
+                    <div class="bg-white rounded p-3 shadow-sm h-100">
+
+                        <div class="d-flex align-items-center gap-2">
+                            <h2 class="fs-4 m-0">Total Orders</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 16 16"><path fill="none" stroke="#005eff" stroke-linejoin="round" d="M5 11.5h4M5 9h6M5 6.5h6m-5.5-4h-2v12h9v-12h-2m-5-1h5l-.625 2h-3.75z" stroke-width="1"/></svg>
+                        </div>
+                        <p class="fs-3" th:text="${totalOrders}"></p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 mt-3">
+                    <div class="bg-white rounded p-3 shadow-sm h-100">
+
+                        <div class="d-flex align-items-center gap-2">
+                            <h2 class="fs-4 m-0">Orders Revenue</h2>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><g fill="none" stroke="#005eff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="#005eff"><path d="M12 9c-1.105 0-2 .672-2 1.5s.895 1.5 2 1.5s2 .672 2 1.5s-.895 1.5-2 1.5m0-6c.87 0 1.612.417 1.886 1M12 9V8m0 7c-.87 0-1.612-.417-1.886-1M12 15v1"/><path d="M11.998 2C8.99 2 7.04 4.019 4.734 4.755c-.938.3-1.407.449-1.597.66c-.19.21-.245.519-.356 1.135c-1.19 6.596 1.41 12.694 7.61 15.068c.665.255.998.382 1.61.382s.946-.128 1.612-.383c6.199-2.373 8.796-8.471 7.606-15.067c-.111-.616-.167-.925-.357-1.136s-.658-.36-1.596-.659C16.959 4.019 15.006 2 11.998 2"/></g></svg>                        </div>
+
+                        <p th:text="${'$' + totalRevenue}" class="fs-3"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <div class="table-responsive-lg">
+                <table class="table table table-bordered" id="productTable">
+                    <thead>
+                    <tr class="bg-light">
+                        <th class="text-center" scope="col">#</th>
+                        <th class="text-center" scope="col">Image</th>
+                        <th class="text-center" scope="col">Product Name</th>
+                        <th class="text-center" scope="col">Product Id</th>
+                        <th class="text-center" scope="col">Customer Name</th>
+                        <th class="text-center" scope="col">Customer Id</th>
+                        <th class="text-center" scope="col">Order Date</th>
+                        <th class="text-center" scope="col">QTY</th>
+                        <th class="text-center" scope="col">Country</th>
+                        <th class="text-center" scope="col">City</th>
+                        <th class="text-center" scope="col">Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orderItem : ${orderItems}" class="align-middle">
+                        <td th:text="${orderItem.order.id}" class="truncate-cell text-center"></td>
+                        <td>
+                            <img th:src="@{'/uploads/' + ${orderItem.product.imageUrl}}" alt="Product Image" width="35" style="height: 70px; object-fit: contain;"/>
+                        </td>
+                        <td th:text="${orderItem.product.productName}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.product.id}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.order.userAccount.username}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.order.userAccount.id}" class="truncate-cell text-center"></td>
+                        <td th:text="${#temporals.format(orderItem.order.createdAt, 'dd/MM/yyyy')}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.quantity}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.order.country}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.order.city}" class="truncate-cell text-center"></td>
+                        <td th:text="${orderItem.order.streetAddress}" class="truncate-cell text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="/js/productManager.js"></script>
+</body>
+</html>

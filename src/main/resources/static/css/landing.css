@@ -1,0 +1,8 @@
+.img-size {
+    width: 150px;
+    height: 150px;
+}
+
+.img-size:hover {
+    transform: scale(1.1);
+}
