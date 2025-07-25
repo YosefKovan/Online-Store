@@ -1,64 +1,79 @@
-Names:
-   Yosef Kovan - yosefko@edu.jmc.ac.il
-   Shamuel Friedman - shamuelfr@edu.jmc.ac.il
+# Online Store E-Commerce Project
 
-  Amazon-Style E-Commerce Web Application
+## Overview
+This is a full-stack e-commerce web application built with Java Spring Boot and Thymeleaf. It allows users to browse products, manage a shopping cart, register and log in, and complete purchases. Admin features include product and category management, and order tracking.
 
-Admin email : admin@gmail.com
-Admin Password : Test@2025
-  
-  Overview
+**This project is for educational purposes only. Project creator: Yosef Kovan.**
 
-This project is a Java & Spring Boot web application inspired by Amazon’s core features. It lets users browse products by category, add items to a persistent shopping cart, place orders, and submit ratings and reviews. Administrators can manage the product catalog and categories through a simple panel.
+## Features
+- User registration, login, and authentication (Spring Security)
+- Product catalog with categories
+- Product details and reviews
+- Shopping cart and checkout flow
+- Order history for users
+- Admin dashboard for managing products, categories, and orders
+- Responsive UI with Thymeleaf templates
+- Custom JavaScript and CSS for enhanced interactivity
 
-  Technology Stack
+## Tech Stack
+- **Backend:** Java 21, Spring Boot 3.5.0, Spring Data JPA, Spring Security
+- **Frontend:** Thymeleaf, HTML, CSS, JavaScript
+- **Database:** MySQL (can be run using XAMPP)
+- **Build Tool:** Maven
 
-   Language & Framework: Java 17 with Spring Boot (Spring MVC, Spring Data JPA, Hibernate, Jakarta Validation)
-   Database: MySQL Template Engine: Thymeleaf with Bootstrap 5 for responsive, mobile-friendly pages
+## Screenshots
 
-   What You’ll Find in the Project
+### Landing Page
+![Landing Page](images-for-git/landing-page.png)
 
-1.  Domain Models & Repositories
+### Products Page
+![Products Page](images-for-git/products-page.png)
 
-     Entities for products, categories, users, cart items and reviews
-     Spring Data JPA repositories to handle persistence and queries
+### Product Details Page
+![Product Page](images-for-git/product-page.png)
 
-2.  Services & Business Logic
+### Payment/Checkout Page
+![Payment Page](images-for-git/payment-page.png)
 
-     Services that encapsulate operations such as adding to cart, checking out, creating reviews, and enforcing business rules
+## Getting Started
 
-3.  Web Layer
+**Note:** XAMPP was used to run the MySQL server for this project. You can use XAMPP to easily start MySQL and import the provided `ex4` database file to view the sample data. Use phpMyAdmin (included with XAMPP) or any MySQL GUI to import the database file—no command line required.
 
-     RESTful controllers for all key operations: listing products, viewing details, managing the session cart, submitting and fetching reviews
-     Thymeleaf templates that render dynamic HTML pages, including reusable fragments for navigation and footers
+- To log in as an admin, use:
+  - **Email:** admin@gmail.com
+  - **Password:** Test@2025
+  (This is not real info, just for the project.)
 
-4.  Session-Scoped Shopping Cart
+- The project was developed and run using **IntelliJ IDEA**. Open the project in IntelliJ and run the main application class to start the server.
 
-     A dedicated Spring bean holds the current user’s cart in memory
-     On checkout, those items become part of the permanent order history
+### Prerequisites
+- Java 21+
+- IntelliJ IDEA (or any compatible IDE)
+- XAMPP (for MySQL server and phpMyAdmin)
 
-5.   Validation Rules
+## Directory Structure
+```
+├── images/                        # Website screenshots for documentation
+├── src/
+│   └── main/
+│       ├── java/                  # Java source code (controllers, services, models)
+│       ├── resources/
+│       │   ├── static/
+│       │   │   ├── css/           # Custom CSS
+│       │   │   ├── js/            # Custom JavaScript
+│       │   │   └── img/           # Static images and logos
+│       │   ├── templates/         # Thymeleaf HTML templates
+│       │   └── application.properties # App configuration
+├── ex4 .sql                       # MySQL schema and sample data
+├── pom.xml                        # Maven build file
+└── README.md                      # Project documentation
+```
 
-     Passwords must be at least 8 characters long and include at least one letter
-     Review ratings are enforced to be whole numbers between 1 and 5
+## Customization
+- **Static Assets:** Place additional images in `src/main/resources/static/img`.
+- **Templates:** Modify HTML in `src/main/resources/templates` for UI changes.
+- **JS/CSS:** Update or add files in `src/main/resources/static/js` and `src/main/resources/static/css`.
 
-   Database Schema (Conceptually)
-
-Category: unique ID and name
-Product: ID, name, description, price, and link to its category
-UserAccount: ID, username, encrypted password, and roles (e.g. ROLE\_USER, ROLE\_ADMIN)
-CartItem: links a user to products and tracks quantity during a session
-Review: numeric rating, optional comment, timestamp, and references to both product and user
-
-   How It Works
-
-Browsing & Searching**: Visitors can filter products by category, view details and real-time average ratings.
-Shopping Cart: Adding or removing items happens instantly in the session cart; the UI always reflects current quantities.
-Checkout & Order History: Once confirmed, cart contents are saved to a simple order history table so past carts can be reviewed.
-Reviews & Ratings: Registered users can leave a star rating (1–5) and an optional text comment. All reviews display in chronological order on the product page.
-Admin Panel: Administrators can add, edit or remove categories and products. If a product exists in any active cart, deletion is blocked with a clear error.
-
-   Sample Data for Demo
-
-For a better user experience, you can import the provided SQL dump to pre-load the database with sample products, users and reviews. This lets you explore the full functionality—catalog browsing, order history and review displays—without manually entering data.
+## License
+This project is for educational purposes only. Project creator: Yosef Kovan.
 
